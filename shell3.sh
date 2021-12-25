@@ -2,4 +2,4 @@
 a=100
 echo $a
 echo ${a} USD
-echo Todays date is $(date)
+echo "Todays date is $(date)"
