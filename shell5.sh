@@ -6,7 +6,7 @@ if [ -z "$a" ]; then
   echo "A is empty"
   exit
 fi
-if [ ${a} -gt ${b} ]; then
+if [ ${a} -gt ${b} -a ${a} -gt ${c} ]; then
   echo "A is the greatest no"
 elif [ ${b} -gt ${c} ]; then
   echo "B is greatest no"
