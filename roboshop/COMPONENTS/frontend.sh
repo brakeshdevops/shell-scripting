@@ -5,7 +5,7 @@ STAT_CHECk()
     exit 1
   fi
 }
-yum install nginx -y
+yum install ngin -y
 STAT_CHECK $? "Nginx installation failed"
 systemctl enable nginx
 systemctl start nginx
