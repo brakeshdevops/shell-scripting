@@ -1,0 +1,1 @@
+source COMPONENTS/common.sh

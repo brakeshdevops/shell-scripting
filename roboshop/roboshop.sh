@@ -7,7 +7,7 @@ if [ ${user_id} -ne 0 ]; then
   echo "you are not a root user"
   exit
 fi
-COMPONENT=$1
+export COMPONENT=$1
 if [ -z "$COMPONENT" ]; then
   echo "Component input missing"
   exit
