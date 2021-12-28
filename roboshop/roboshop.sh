@@ -12,8 +12,7 @@ if [ -z "$COMPONENT" ]; then
   echo "Component input missing"
   exit
 fi
-x=-e COMPONENTS/${COMPONENT}.sh
-echo ${x}
+
 if [ ! -e COMPONENTS/${COMPONENT}.sh ]; then
   echo -e "\e[1;31m Component missing\e[0m"
   exit
