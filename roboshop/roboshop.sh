@@ -14,5 +14,6 @@ if [ -z "$COMPONENT" ]; then
 fi
 if [ ! -e components/${COMPONENT}.sh ]; then
   echo -e "\e[1;31m Component missing\e[0m"
+  exit
 fi
 bash components/${COMPONENT}.sh
