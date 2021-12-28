@@ -5,7 +5,7 @@ curl -s -L -o /tmp/frontend.zip "https://github.com/roboshop-devops-project/fron
 STAT_CHECK $? "Download frontend"
 rm -rf /usr/share/nginx/html/*
 STAT_CHECK $? "Remove old html files"
-cd /tmp && unzip /tmp/frontend.zip &>>${LOG_FILE}
+cd /tmp && unzip -o /tmp/frontend.zip &>>${LOG_FILE}
 STAT_CHECK $? "Extracting Frontend content"
 cd /tmp/frontend-main/static/ && cp -r * /usr/share/nginx/html/
 STAT_CHECK $? "copying front end content"
