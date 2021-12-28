@@ -1,4 +1,4 @@
-STAT_CHECk()
+STAT_CHECK()
 {
   if [ $1 -ne 0 ]; then
     echo -e "\e[1;31m$2-failed\e[0m"
