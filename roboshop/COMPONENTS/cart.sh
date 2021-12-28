@@ -1,0 +1,1 @@
+echo -e "\e[1;31mWelcome to cart\e[0m"
