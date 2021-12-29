@@ -35,9 +35,10 @@ STAT_CHECK $? "Install erlang and RabbitMQ"
 
 systemctl enable rabbitmq-server &>>${LOG_FILE} && systemctl restart rabbitmq-server &>>${LOG_FILE}
 STAT_CHECK $? "Enable and start RabbitMQ server "
-
-rabbitmqctl add_user roboshop roboshop123 &>>${LOG_FILE}
-STAT_CHECK $? "Added roboshop user"
-
+rabbitmqctl list_users|grep roboshop &>>${LOG_FILE}
+if [ $? -ne 0 ]; then
+  rabbitmqctl add_user roboshop roboshop123 &>>${LOG_FILE}
+  STAT_CHECK $? "Added roboshop user"
+fi
 ## rabbitmqctl set_user_tags roboshop administrator
 ## rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*"
