@@ -3,15 +3,13 @@ curl -s -o /etc/yum.repos.d/mongodb.repo https://raw.githubusercontent.com/robos
 STAT_CHECK $? "download mongodb repository"
 yum install -y mongodb-org &>>${LOG_FILE}
 STAT_CHECK $? "Install Mongodb"
-systemctl enable mongod &>>${LOG_FILE} && systemctl start mongod &>>${LOG_FILE}
-STAT_CHECK $? "Started mongodb service"
 sed -i 's/127.0.0.1/0.0.0.0/' /etc/mongod.conf &>>${LOG_FILE}
 STAT_CHECK $? "Update mongodb configuration file"
-#Update Liste IP address from 127.0.0.1 to 0.0.0.0 in config file
-#Config file: /etc/mongod.conf
-#
-#then restart the service
-#
+
+systemctl enable mongod &>>${LOG_FILE} && systemctl restart mongod &>>${LOG_FILE}
+STAT_CHECK $? "Started mongodb service"
+
+Download mongodb
 ## systemctl restart mongod
 #Every Database needs the schema to be loaded for the application to work.
 #Download the schema and load it.
