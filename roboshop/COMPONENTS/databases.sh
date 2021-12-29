@@ -10,14 +10,7 @@ systemctl enable mongod &>>${LOG_FILE} && systemctl restart mongod &>>${LOG_FILE
 STAT_CHECK $? "Started mongodb service"
 
 Download mongodb
-## systemctl restart mongod
-#Every Database needs the schema to be loaded for the application to work.
-#Download the schema and load it.
-#
-## curl -s -L -o /tmp/mongodb.zip "https://github.com/roboshop-devops-project/mongodb/archive/main.zip"
-#
-## cd /tmp
-## unzip mongodb.zip
-## cd mongodb-main
-## mongo < catalogue.js
-## mongo < users.js
+
+cd mongodb-mainD
+mongo < catalogue.js &>>${LOG_FILE} && mongo < users.js &>>${LOG_FILE}
+STAT_CHECK $? "Loading the schema"
