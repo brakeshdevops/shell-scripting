@@ -19,7 +19,7 @@ curl -L https://raw.githubusercontent.com/roboshop-devops-project/redis/main/red
 STAT_CHECK $? "Downloaded redis"
 
 yum install redis -y &>>${LOG_FILE}
-STAT_CHECk $? "Installed redis"
+STAT_CHECK $? "Installed redis"
 
 sed -i -e "s/127.0.0.1/0.0.0.0/" /etc/redis.conf &>>${LOG_FILE}
 STAT_CHECK $? "Update IP address"
