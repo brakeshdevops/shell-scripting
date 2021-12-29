@@ -11,6 +11,6 @@ STAT_CHECK $? "Started mongodb service"
 
 Download mongodb
 
-cd mongodb-mainD
+cd mongodb-main
 mongo < catalogue.js &>>${LOG_FILE} && mongo < users.js &>>${LOG_FILE}
 STAT_CHECK $? "Loading the schema"
