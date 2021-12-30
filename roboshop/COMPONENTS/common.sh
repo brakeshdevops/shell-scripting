@@ -63,7 +63,7 @@ java()
 python()
 {
   c=${1}
-  yum install python36 gcc python3-devel -y
+  yum install python36 gcc python3-devel -y &>>${LOG_FILE}
   STAT_CHECK $? "Install python"
   app_user
   cd /home/roboshop/${1} && pip3 install -r requirements.txt &>>${LOG_FILE}
