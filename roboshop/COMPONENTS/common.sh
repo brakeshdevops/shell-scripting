@@ -59,12 +59,14 @@ java()
   cd /home/roboshop/${1} && mvn clean package &>>${LOG_FILE} && mv target/${1}-1.0.jar ${1}.jar &>>${LOG_FILE}
   STAT_CHECK $? "mvn clean package"
   systemd_service ${c}
-#  Update Servers IP address in /home/roboshop/shipping/systemd.service
-#
-#  Copy the service file and start the service.
-#
-#  # mv /home/roboshop/shipping/systemd.service /etc/systemd/system/shipping.service
-#  # systemctl daemon-reload
-#  # systemctl start shipping
-#  # systemctl enable shipping
+}
+python()
+{
+  c=${1}
+  yum install python36 gcc python3-devel -y
+  STAT_CHECK $? "Install python"
+  app_user
+  cd /home/roboshop/${1} && pip3 install -r requirements.txt &>>${LOG_FILE}
+  STAT_CHECK $? "install dependencies"
+  systemd_service ${c}
 }
