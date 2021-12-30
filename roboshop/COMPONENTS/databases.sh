@@ -43,7 +43,7 @@ fi
 rabbitmqctl set_user_tags roboshop administrator &>>${LOG_FILE} && rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*" &>>${LOG_FILE}
 STAT_CHECK $? "Setup RabbitMQ permissions"
 curl -s -L -o /etc/yum.repos.d/mysql.repo https://raw.githubusercontent.com/roboshop-devops-project/mysql/main/mysql.repo &>>${LOG_FILE}
-STAT_CHECk $? "Downloading the mysql repository"
+STAT_CHECK $? "Downloading the mysql repository"
 
 yum install mysql-community-server -y &>>${LOG_FILE}
 STAT_CHECK $? "Installing mysql server"
