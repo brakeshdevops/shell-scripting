@@ -65,5 +65,5 @@ if [ $? -eq 0 ]; then
 fi
 Download mysql
 cd /tmp/mysql-main
-mysql -u root -pRoboShop@1 <shipping.sql
+mysql -u root -pRoboShop@1 <shipping.sql &>>${LOG_FILE}
 STAT_CHECK $? "Load Schema"
