@@ -51,7 +51,7 @@ STAT_CHECK $? "Installing mysql server"
 systemctl enable mysqld &>>${LOG_FILE} &&systemctl start mysqld &>>${LOG_FILE}
 STAT_CHECK $? "Staring mysql server"
 
-default_pwd=$($ sudo grep 'temporary password' /var/log/mysqld.log|awk '{print $NF}')
+default_pwd=$( sudo grep 'temporary password' /var/log/mysqld.log|awk '{print $NF}')
 
 echo "ALTER USER 'root'@'localhost' IDENTIFIED BY 'RoboShop@1';" >/tmp/pass.sql
 mysql --connect-expired-password -uroot -p"${default_pwd}" </tmp/pass.sql &>>${LOG_FILE}
