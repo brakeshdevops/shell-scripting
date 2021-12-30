@@ -1,1 +1,2 @@
-echo -e "\e[1;31mWelcome to shipping\e[0m"
+source COMPONENTS/common.sh
+java shipping
