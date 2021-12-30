@@ -18,3 +18,23 @@ Download()
   unzip -o ${1}.zip &>>${LOG_FILE}
   STAT_CHECK $? "Unzipping the file"
 }
+nodejs()
+{
+  yum install nodejs make gcc-c++ -y &>>${LOG_FILE}
+  STAT_CHECK $? "Install nodejs"
+  id roboshop &>>${LOG_FILE}
+  if [ $? -ne 0 ]; then
+    useradd roboshop &>>${LOG_FILE}
+    STAT_CHECK $? "User Add"
+  fi
+  Download ${1}
+  rm -rf /home/roboshop/${1} && mkdir -p /home/roboshop/${1} && cp -r /tmp/${1}-main/* /home/roboshop/${1} &>>${LOG_FILE}
+  STAT_CHECK $? "Copy ${1} content"
+  cd /home/roboshop/${1} && npm install --unsafe-perm &>>${LOG_FILE}
+  STAT_CHECK $? "Install npm"
+  chown roboshop:roboshop -R /home/roboshop
+  sed -i -e 's/MONGO_DNSNAME/mongod.roboshop.internal/' /home/roboshop/${1}/systemd.service &>>${LOG_FILE} && mv /home/roboshop/${1}/systemd.service /etc/systemd/system/${1}.service &>>${LOG_FILE}
+  STAT_CHECK $? "update systemd file"
+  systemctl daemon-reload &>>${LOG_FILE} && systemctl start ${1} &>>${LOG_FILE} && systemctl enable ${1} &>>${LOG_FILE}
+  STAT_CHECK $? "Restart ${1}"
+}
