@@ -17,23 +17,25 @@ Download()
   cd /tmp
   unzip -o ${1}.zip &>>${LOG_FILE}
   STAT_CHECK $? "Unzipping the file"
+  rm -rf /home/roboshop/${1} && mkdir -p /home/roboshop/${1} && cp -r /tmp/${1}-main/* /home/roboshop/${1} &>>${LOG_FILE}
+  STAT_CHECK $? "Copy ${1} content"
+
 }
 app_user()
 {
-   id roboshop &>>${LOG_FILE}
+  id roboshop &>>${LOG_FILE}
     if [ $? -ne 0 ]; then
       useradd roboshop &>>${LOG_FILE}
       STAT_CHECK $? "User Add"
     fi
-    Download ${1}
+    Download ${c}
 }
 nodejs()
 {
+  c=${1}
   yum install nodejs make gcc-c++ -y &>>${LOG_FILE}
   STAT_CHECK $? "Install nodejs"
- app_user
-  rm -rf /home/roboshop/${1} && mkdir -p /home/roboshop/${1} && cp -r /tmp/${1}-main/* /home/roboshop/${1} &>>${LOG_FILE}
-  STAT_CHECK $? "Copy ${1} content"
+  app_user
   cd /home/roboshop/${1} && npm install --unsafe-perm &>>${LOG_FILE}
   STAT_CHECK $? "Install npm"
   chown roboshop:roboshop -R /home/roboshop
@@ -44,17 +46,12 @@ nodejs()
 }
 java()
 {
-  yum install maven -y &>>${LOG_FILE}
-  STAT_CHECK $? "Install Maven"
+  c=${1}
+  yum install maven -y
+  STAT_CHECK $? "Install maven"
   app_user
-#  # useradd roboshop
-#  Download the repo
-#  $ cd /home/roboshop
-#  $ curl -s -L -o /tmp/shipping.zip "https://github.com/roboshop-devops-project/shipping/archive/main.zip"
-#  $ unzip /tmp/shipping.zip
-#  $ mv shipping-main shipping
-#  $ cd shipping
-#  $ mvn clean package
+  cd /home/roboshop/${1} && mvn clean package &>>${LOG_FILE}
+  STAT_CHECK $? "mvn clean package"
 #  $ mv target/shipping-1.0.jar shipping.jar
 #  Update Servers IP address in /home/roboshop/shipping/systemd.service
 #
