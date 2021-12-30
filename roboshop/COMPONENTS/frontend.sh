@@ -11,6 +11,6 @@ cd /tmp/frontend-main/static/ && cp -r * /usr/share/nginx/html/
 STAT_CHECK $? "copying front end content"
 cp /tmp/frontend-main/localhost.conf /etc/nginx/default.d/roboshop.conf
 STAT_CHECK $? "Updating nginx config file"
-sed -i -e '/catalogue/ s/localhost/catalogue.roboshop.internal/' /etc/nginx/default.d/roboshop.conf
+sed -i -e '/catalogue/ s/localhost/catalogue.roboshop.internal/' -e '/user/ s/localhost/user.roboshop.internal/' /etc/nginx/default.d/roboshop.conf
 systemctl enable nginx &>>${LOG_FILE} && systemctl restart nginx &>>${LOG_FILE}
 STAT_CHECK $? "Restart nginx"
