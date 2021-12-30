@@ -7,7 +7,8 @@ if [ $? -ne 0 ]; then
   STAT_CHECK $? "User Add"
 fi
 Download catalogue
-STAT_CHECK $? "Download Catalogue"
+rm -rf /home/roboshop/catalogue && mkdir -p /home/roboshop/catalogue && cp -r /tmp/catalogue-main/* /home/roboshop/catalogue &>>${LOG_FILE}
+STAT_CHECK $? "Copy catalogue content"
 #$ mv catalogue-main catalogue
 #$ cd /home/roboshop/catalogue
 #$ npm install
