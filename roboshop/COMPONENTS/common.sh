@@ -54,7 +54,7 @@ java()
   yum install maven -y &>>{LOG_FILE}
   STAT_CHECK $? "Install maven"
   app_user
-  cd /home/roboshop/${1} && mvn clean package && mv target/${1}-1.0.jar ${1}.jar &>>${LOG_FILE}
+  cd /home/roboshop/${1} && mvn clean package &>>${LOG_FILE} && mv target/${1}-1.0.jar ${1}.jar &>>${LOG_FILE}
   STAT_CHECK $? "mvn clean package"
   systemd_service ${c}
 #  Update Servers IP address in /home/roboshop/shipping/systemd.service
