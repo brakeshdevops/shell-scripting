@@ -47,7 +47,7 @@ nodejs()
 java()
 {
   c=${1}
-  yum install maven -y
+  yum install maven -y &>>{LOG_FILE}
   STAT_CHECK $? "Install maven"
   app_user
   cd /home/roboshop/${1} && mvn clean package &>>${LOG_FILE}
