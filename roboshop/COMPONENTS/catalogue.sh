@@ -12,13 +12,7 @@ STAT_CHECK $? "Copy catalogue content"
 cd /home/roboshop/catalogue && npm install --unsafe-perm &>>${LOG_FILE}
 STAT_CHECK $? "Install npm"
 chown roboshop:roboshop -R /home/roboshop
-sed -i -e 's/MONGO_DNSNAME/mongod.roboshop.internal' /home/roboshop/catalogue/systemd.service && mv /home/roboshop/catalogue/systemd.service /etc/systemd/system/catalogue.service &>>${LOG_FILE}
+sed -i -e 's/MONGO_DNSNAME/mongod.roboshop.internal' /home/roboshop/catalogue/systemd.service &>>${LOG_FILE} && mv /home/roboshop/catalogue/systemd.service /etc/systemd/system/catalogue.service &>>${LOG_FILE}
 STAT_CHECK $? "update systemd file"
-
-#NOTE: We need to update the IP address of MONGODB Server in systemd.service file
-#Now, lets set up the service with systemctl.
-#
-## mv /home/roboshop/catalogue/systemd.service /etc/systemd/system/catalogue.service
-## systemctl daemon-reload
-## systemctl start catalogue
-## systemctl enable catalogue
+systemctl daemon-reload &>>${LOG_FILE} && systemctl start catalogue &>>${LOG_FILE} && systemctl enable catalogue &>>${LOG_FILE}
+STAT_CHECK $? "Restart catalogue"
