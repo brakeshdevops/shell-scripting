@@ -33,7 +33,8 @@ nodejs()
   cd /home/roboshop/${1} && npm install --unsafe-perm &>>${LOG_FILE}
   STAT_CHECK $? "Install npm"
   chown roboshop:roboshop -R /home/roboshop
-  sed -i -e 's/MONGO_DNSNAME/mongod.roboshop.internal/' /home/roboshop/${1}/systemd.service &>>${LOG_FILE} && mv /home/roboshop/${1}/systemd.service /etc/systemd/system/${1}.service &>>${LOG_FILE}
+  sed -i -e 's/MONGO_DNSNAME/mongod.roboshop.internal/' -e 's/MONGO_ENDPOINT/mongod.roboshop.internal/' -e 's/REDIS_ENDPOINT/redis.roboshop.internal/' /home/roboshop/${1}/systemd.service &>>${LOG_FILE} && mv /home/roboshop/${1}/systemd.service /etc/systemd/system/${1}.service &>>${LOG_FILE}
+
   STAT_CHECK $? "update systemd file"
   systemctl daemon-reload &>>${LOG_FILE} && systemctl start ${1} &>>${LOG_FILE} && systemctl enable ${1} &>>${LOG_FILE}
   STAT_CHECK $? "Restart ${1}"
