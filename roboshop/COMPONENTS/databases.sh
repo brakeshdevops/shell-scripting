@@ -58,17 +58,11 @@ if [ $? -ne 0 ]; then
   mysql --connect-expired-password -uroot -p"${default_pwd}" </tmp/pass.sql &>>${LOG_FILE}
   STAT_CHECK $? "Password Setup"
 fi
-#
-#Now a default root password will be generated and given in the log file.
-## grep temp /var/log/mysqld.log
-#
-#Next, We need to change the default root password in order to start using the database service.
-## mysql_secure_installation
-#
-#You can check the new password working or not using the following command.
-#
-## mysql -u root -p
-#
+echo 'show plugins;' | mysql -uroot -pRoboShop@1 2>>${LOG_FILE} | grep validate_password &>>${LOG_FILE}
+if [ $? -eq 0 ]; then
+  echo 'uninstall plugin validate_password;' | mysql -uroot -pRoboShop@1 &>>${LOG_FILE}
+  STAT_CHECK $? "uninstall password plugin"
+fi
 #Run the following SQL commands to remove the password policy.
 #> uninstall plugin validate_password;
 #Setup Needed for Application.
