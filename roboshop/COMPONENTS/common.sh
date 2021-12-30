@@ -30,6 +30,14 @@ app_user()
     fi
     Download ${c}
 }
+systemd_service()
+{
+    chown roboshop:roboshop -R /home/roboshop
+    sed -i -e 's/MONGO_DNSNAME/mongod.roboshop.internal/' -e 's/MONGO_ENDPOINT/mongod.roboshop.internal/' -e 's/REDIS_ENDPOINT/redis.roboshop.internal/' -e 's/CATALOGUE_ENDPOINT/catalogue.roboshop.internal/' /home/roboshop/${1}/systemd.service &>>${LOG_FILE} && mv /home/roboshop/${1}/systemd.service /etc/systemd/system/${1}.service &>>${LOG_FILE}
+    STAT_CHECK $? "update systemd file"
+    systemctl daemon-reload &>>${LOG_FILE} && systemctl start ${1} &>>${LOG_FILE} && systemctl enable ${1} &>>${LOG_FILE}
+    STAT_CHECK $? "Restart ${1}"
+}
 nodejs()
 {
   c=${1}
@@ -38,11 +46,7 @@ nodejs()
   app_user
   cd /home/roboshop/${1} && npm install --unsafe-perm &>>${LOG_FILE}
   STAT_CHECK $? "Install npm"
-  chown roboshop:roboshop -R /home/roboshop
-  sed -i -e 's/MONGO_DNSNAME/mongod.roboshop.internal/' -e 's/MONGO_ENDPOINT/mongod.roboshop.internal/' -e 's/REDIS_ENDPOINT/redis.roboshop.internal/' -e 's/CATALOGUE_ENDPOINT/catalogue.roboshop.internal/' /home/roboshop/${1}/systemd.service &>>${LOG_FILE} && mv /home/roboshop/${1}/systemd.service /etc/systemd/system/${1}.service &>>${LOG_FILE}
-  STAT_CHECK $? "update systemd file"
-  systemctl daemon-reload &>>${LOG_FILE} && systemctl start ${1} &>>${LOG_FILE} && systemctl enable ${1} &>>${LOG_FILE}
-  STAT_CHECK $? "Restart ${1}"
+  systemd_service ${c}
 }
 java()
 {
@@ -50,9 +54,9 @@ java()
   yum install maven -y &>>{LOG_FILE}
   STAT_CHECK $? "Install maven"
   app_user
-  cd /home/roboshop/${1} && mvn clean package &>>${LOG_FILE}
+  cd /home/roboshop/${1} && mvn clean package && mv target/${1}-1.0.jar ${1}.jar &>>${LOG_FILE}
   STAT_CHECK $? "mvn clean package"
-#  $ mv target/shipping-1.0.jar shipping.jar
+  systemd_service ${c}
 #  Update Servers IP address in /home/roboshop/shipping/systemd.service
 #
 #  Copy the service file and start the service.
