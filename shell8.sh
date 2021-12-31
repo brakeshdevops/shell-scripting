@@ -1,7 +1,8 @@
 read -p "Enter the number" n
 sum=0
 while [ $n -ne 0 ]; do
-  sum=$(($sum+$n))
-  n=$(($n-1))
+  rem=$(($n%10))
+  sum=$(($sum+$rem))
+  n=$(($n/10))
 done
 echo sum $sum
